@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonController : MonoBehaviour
+//Show All button function
+//Answer System
+public class ClickableButtonController : MonoBehaviour
 {
     public GameController gm;
 
@@ -15,11 +17,11 @@ public class ButtonController : MonoBehaviour
     {
         startBtn.onClick.AddListener(StartGameOnclick);
     }
-    
+
     private void StartGameOnclick()
     {
         Debug.Log("Button clicked with no parameters");
     }
-    
+
 }
 
