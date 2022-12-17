@@ -22,13 +22,23 @@ public class QuestionController : MonoBehaviour
     [Header("Question Control")]
 
     public GameController GameController;
+
+    string QuestionText;
+    List<string> AnswerText = new List<string>();
+    int ansPos = 0;
     //public bool isMixMode;
+
+    void Start()
+    {
+        AnswerText.Add("A");
+        AnswerText.Add("B");
+        AnswerText.Add("C");
+    }
+
 
     //Generate Question
     #region Generate Question
 
-    string QuestionText;
-    List<string> AnswerText = new List<string>();
     void QuestionType()
     {
         switch (GameController.gameMode)
@@ -65,13 +75,17 @@ public class QuestionController : MonoBehaviour
         //SEND TO POS
         if (isP1)
         {
+            P1_currentTargetAns = ansPos;
+
             P1_questionBar.text = QuestionText;
             P1_answerBar_A.text = AnswerText[0];
-            P1_answerBar_B.text = AnswerText[1;
+            P1_answerBar_B.text = AnswerText[1];
             P1_answerBar_C.text = AnswerText[2];
         }
         else
         {
+            P2_currentTargetAns = ansPos;
+
             P2_questionBar.text = QuestionText;
             P2_answerBar_A.text = AnswerText[0];
             P2_answerBar_B.text = AnswerText[1];
@@ -100,18 +114,23 @@ public class QuestionController : MonoBehaviour
         int questioSlot_partB = RandomNum();
 
         int ansSlot = questioSlot_partA + questioSlot_partB;
-        int ansPos = RandomAnsPos();
+        Debug.Log(ansSlot + "=" + questioSlot_partA + " + " + questioSlot_partB);
+        ansPos = RandomAnsPos();
 
+        //Random ans
         for (int i = 0; i < 2; i = i + 0)
         {
             int otherAns = RandomNum() + RandomNum();
-            if (otherAns != ansSlot)
+            if (otherAns != ansSlot &&
+            AnswerText[0] != AnswerText[1] &&
+            AnswerText[0] != AnswerText[2] &&
+            AnswerText[1] != AnswerText[2])
             {
+                AnswerText[i] = "" + otherAns;
                 i++;
             }
-            AnswerText[i] = "" + otherAns;
         }
-        Debug.Log(ansSlot + "=" + questioSlot_partA + " + " + questioSlot_partB);
+        AnswerText[ansPos] = "" + ansSlot;
 
         return questioSlot_partA + " + " + questioSlot_partB + " = ?";
     }
@@ -119,13 +138,17 @@ public class QuestionController : MonoBehaviour
     {
         //2-2 = ?  
         //output text
-        int questioSlot_partA = RandomNum();
+        int questioSlot_partA = RandomNum() + 1;
         int questioSlot_partB = RandomNum();
         while (questioSlot_partA < questioSlot_partB)
         {
-            questioSlot_partA = RandomNum();
+            questioSlot_partA = RandomNum() + 1;
             questioSlot_partB = RandomNum();
         }
+
+        ansPos = RandomAnsPos();
+        //Random ans
+
         return questioSlot_partA + " - " + questioSlot_partB + " = ?";
     }
 

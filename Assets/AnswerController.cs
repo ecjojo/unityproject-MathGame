@@ -10,6 +10,7 @@ public class AnswerController : MonoBehaviour
 
     public void P1_Check_Answer(int enterAns)
     {
+        Debug.Log("enterAns = " + enterAns);
         //correct
         if (QuestionController.P1_currentTargetAns == enterAns)
         {
@@ -27,11 +28,14 @@ public class AnswerController : MonoBehaviour
 
         //check game stati(time)
         //next q
+        QuestionController.Generate_Question(true);
+
 
     }
 
     public void P2_Check_Answer(int enterAns)
     {
+        Debug.Log("enterAns = " + enterAns);
         //correct
         if (QuestionController.P2_currentTargetAns == enterAns)
         {
@@ -49,6 +53,7 @@ public class AnswerController : MonoBehaviour
 
         //check game stati(time)
         //next q
+        QuestionController.Generate_Question(false);
 
     }
 
@@ -59,32 +64,39 @@ public class AnswerController : MonoBehaviour
         {
             //Check Ans
             P1_Check_Answer(0);
+            Debug.Log("A");
+
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
             //Check Ans
             P1_Check_Answer(1);
+            Debug.Log("S");
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
             //Check Ans
             P1_Check_Answer(2);
+            Debug.Log("D");
         }
         //P2 Control
         if (Input.GetKeyDown(KeyCode.J))
         {
             //Check Ans
             P2_Check_Answer(0);
+            Debug.Log("J");
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
             //Check Ans
             P2_Check_Answer(1);
+            Debug.Log("K");
         }
         if (Input.GetKeyDown(KeyCode.L))
         {
             //Check Ans
             P2_Check_Answer(2);
+            Debug.Log("L");
         }
 
     }

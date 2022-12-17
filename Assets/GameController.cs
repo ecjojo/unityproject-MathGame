@@ -37,16 +37,24 @@ public class GameController : MonoBehaviour
 
     public TMP_Text P1ScoreDisplay, P2ScoreDisplay;
 
+
+
     public void P1_AddScore()
     {
-        P1Score++;
         P1AnsCombo++;
+        float comboscore = (1 + P1AnsCombo * 0.1f) * 10;
+        P1Score += (int)comboscore;
+
+        ScoreUIupdate();
     }
 
     public void P2_AddScore()
     {
-        P2Score++;
         P2AnsCombo++;
+        float comboscore = (1 + P2AnsCombo * 0.1f) * 10;
+        P2Score += (int)comboscore;
+
+        ScoreUIupdate();
     }
 
     void ScoreUIupdate()
@@ -58,6 +66,8 @@ public class GameController : MonoBehaviour
     void Start()
     {
         GameReset();
+        GameStart();
+        ScoreUIupdate();
     }
     void GameReset()
     {
