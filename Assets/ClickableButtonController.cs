@@ -10,15 +10,24 @@ public class ClickableButtonController : MonoBehaviour
     public GameController gm;
 
     [Header("Button Objects")]
+    //MEUN
     public Button startBtn;
+    //GAME & RESULT
     public Button backBtn;
+
 
     private void Awake()
     {
-        startBtn.onClick.AddListener(StartGameOnclick);
+        startBtn.onClick.AddListener(GameStartOnclick);
+        backBtn.onClick.AddListener(BackToMeunOnclick);
     }
 
-    private void StartGameOnclick()
+    private void GameStartOnclick()
+    {
+        Debug.Log("Button clicked with no parameters");
+    }
+
+    private void BackToMeunOnclick()
     {
         Debug.Log("Button clicked with no parameters");
     }
