@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //FOR CECHK KEYBOARD KEYDOWN
 public class AnswerController : MonoBehaviour
 {
     public GameController GameController;
     public QuestionController QuestionController;
+
+    public Button A, S, D, J, K, L;
+
+    Color correctColor;
+    Color incorrectColor;
 
     public void P1_Check_Answer(int enterAns)
     {
@@ -16,6 +22,7 @@ public class AnswerController : MonoBehaviour
         {
             //targetplayer++
             GameController.P1_AddScore();
+            //PLAYSOUND
         }
         //Incorrect
         else
@@ -41,6 +48,7 @@ public class AnswerController : MonoBehaviour
         {
             //targetplayer++
             GameController.P2_AddScore();
+            //PLAYSOUND
         }
         //Incorrect
         else
@@ -55,6 +63,15 @@ public class AnswerController : MonoBehaviour
         //next q
         QuestionController.Generate_Question(false);
 
+    }
+    void Awake()
+    {
+        A.onClick.AddListener(delegate () { P1_Check_Answer(0); });
+        S.onClick.AddListener(delegate () { P1_Check_Answer(1); });
+        D.onClick.AddListener(delegate () { P1_Check_Answer(2); });
+        J.onClick.AddListener(delegate () { P2_Check_Answer(0); });
+        K.onClick.AddListener(delegate () { P2_Check_Answer(1); });
+        L.onClick.AddListener(delegate () { P2_Check_Answer(2); });
     }
 
     void Update()

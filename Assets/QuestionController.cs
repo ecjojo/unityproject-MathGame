@@ -28,7 +28,7 @@ public class QuestionController : MonoBehaviour
     int ansPos = 0;
     //public bool isMixMode;
 
-    void Start()
+    void Awake()
     {
         AnswerText.Add("A");
         AnswerText.Add("B");
@@ -116,15 +116,17 @@ public class QuestionController : MonoBehaviour
         int ansSlot = questioSlot_partA + questioSlot_partB;
         Debug.Log(ansSlot + "=" + questioSlot_partA + " + " + questioSlot_partB);
         ansPos = RandomAnsPos();
-
+        AnswerText[ansPos] = "" + ansSlot;
         //Random ans
-        for (int i = 0; i < 2; i = i + 0)
+        for (int i = 0; i <= 2; i = i + 0)
         {
             int otherAns = RandomNum() + RandomNum();
-            if (otherAns != ansSlot &&
-            AnswerText[0] != AnswerText[1] &&
-            AnswerText[0] != AnswerText[2] &&
-            AnswerText[1] != AnswerText[2])
+
+            if (
+            otherAns.ToString() != ansSlot.ToString() &&
+            otherAns.ToString() != AnswerText[0] &&
+            otherAns.ToString() != AnswerText[1] &&
+            otherAns.ToString() != AnswerText[2])
             {
                 AnswerText[i] = "" + otherAns;
                 i++;
