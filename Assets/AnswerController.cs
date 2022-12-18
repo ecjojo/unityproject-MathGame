@@ -23,6 +23,7 @@ public class AnswerController : MonoBehaviour
             //targetplayer++
             GameController.P1_AddScore();
             //PLAYSOUND
+            StartCoroutine(OnAnswerFeedback(enterAns, Color.green, new Button[]{A,S,D}));
         }
         //Incorrect
         else
@@ -31,13 +32,24 @@ public class AnswerController : MonoBehaviour
             //incorrect fx
             //show correct Ans animation
             //correct ans pos
+            StartCoroutine(OnAnswerFeedback(enterAns, Color.red, new Button[]{A,S,D}));
         }
 
         //check game stati(time)
         //next q
         QuestionController.Generate_Question(true);
+    }
 
+    IEnumerator OnAnswerFeedback(int enterAns, Color color, Button[] buttonGroup) {
+        Button targetButton = buttonGroup[enterAns];
 
+        if (targetButton) {
+            targetButton.image.color = color;
+        }
+        yield return new WaitForSeconds(2);
+        if (targetButton) {
+            targetButton.image.color = Color.white;
+        }
     }
 
     public void P2_Check_Answer(int enterAns)
@@ -49,6 +61,7 @@ public class AnswerController : MonoBehaviour
             //targetplayer++
             GameController.P2_AddScore();
             //PLAYSOUND
+            StartCoroutine(OnAnswerFeedback(enterAns, Color.green, new Button[]{J,K,L}));
         }
         //Incorrect
         else
@@ -57,6 +70,7 @@ public class AnswerController : MonoBehaviour
             //incorrect fx
             //show correct Ans animation
             //correct ans pos
+            StartCoroutine(OnAnswerFeedback(enterAns, Color.red, new Button[]{J,K,L}));
         }
 
         //check game stati(time)
@@ -66,12 +80,12 @@ public class AnswerController : MonoBehaviour
     }
     void Awake()
     {
-        A.onClick.AddListener(delegate () { P1_Check_Answer(0); });
-        S.onClick.AddListener(delegate () { P1_Check_Answer(1); });
-        D.onClick.AddListener(delegate () { P1_Check_Answer(2); });
-        J.onClick.AddListener(delegate () { P2_Check_Answer(0); });
-        K.onClick.AddListener(delegate () { P2_Check_Answer(1); });
-        L.onClick.AddListener(delegate () { P2_Check_Answer(2); });
+        A.onClick.AddListener(() => { P1_Check_Answer(0); });
+        S.onClick.AddListener(() => { P1_Check_Answer(1); });
+        D.onClick.AddListener(() => { P1_Check_Answer(2); });
+        J.onClick.AddListener(() => { P2_Check_Answer(0); });
+        K.onClick.AddListener(() => { P2_Check_Answer(1); });
+        L.onClick.AddListener(() => { P2_Check_Answer(2); });
     }
 
     void Update()

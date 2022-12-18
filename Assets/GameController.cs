@@ -9,6 +9,7 @@ using TMPro;
 // For Game Countdown
 public class GameController : MonoBehaviour
 {
+    public PanelController PanelController;
     public Button testingBtn;
 
     public Slider gameModeSlider;
@@ -167,7 +168,7 @@ public class GameController : MonoBehaviour
 
     void GameCounterTextupdate()
     {
-        gameTimeCounter = (int)timeRemainingSystem;
+        gameTimeCounter = (int)CountdownSystem;
         TimerDisplay.text = "" + gameTimeCounter;
     }
 
@@ -175,6 +176,11 @@ public class GameController : MonoBehaviour
     public void ChangeGameMode() //UI 
     {
         gameMode = (int)gameModeSlider.value;
+    }
+
+    void EndGame()
+    {
+
     }
 
 }
