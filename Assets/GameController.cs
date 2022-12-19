@@ -40,9 +40,15 @@ public class GameController : MonoBehaviour
 
     public TMP_Text P1ScoreDisplay, P2ScoreDisplay;
 
+    [Header("Result")]
+    public TMP_Text ResultDisplay;
+
 
     public void P1_AddScore()
     {
+        float AnsSpeed=gameTimeCounter-P1AnsSpeed;
+        P1AnsSpeed=gameTimeCounter;
+        
         P1AnsCombo++;
         float comboscore = (1 + P1AnsCombo * 0.1f) * 10;
         P1Score += (int)comboscore;
@@ -52,6 +58,9 @@ public class GameController : MonoBehaviour
 
     public void P2_AddScore()
     {
+        float AnsSpeed=gameTimeCounter-P2AnsSpeed;
+        P2AnsSpeed=gameTimeCounter;
+        
         P2AnsCombo++;
         float comboscore = (1 + P2AnsCombo * 0.1f) * 10;
         P2Score += (int)comboscore;
@@ -69,9 +78,7 @@ public class GameController : MonoBehaviour
             float ratio = P1Score / (P1Score + P2Score);
             ScoreBar.DOValue(ratio, 5, false);
             Debug.Log("ratio:" + ratio);
-
         }
-
     }
 
     void Start()
@@ -79,23 +86,13 @@ public class GameController : MonoBehaviour
         GameReset();
         GameStart();
         ScoreUIupdate();
+        P1AnsSpeed=gameTimeCounter;
+        P2AnsSpeed=gameTimeCounter;
     }
     void GameReset()
     {
         P1Score = 0;
         P2Score = 0;
-    }
-    void Awake()
-    {
-        testingBtn.onClick.AddListener(Testing);
-    }
-
-    void Testing()
-    {
-        //GEN Q
-        //Generate_Question();
-        //GEN A BTN
-        //Generate_Answer();
     }
 
     public void GameStart()
@@ -110,9 +107,6 @@ public class GameController : MonoBehaviour
         QuestionController.Generate_Question(false);
 
     }
-
-
-
     //
     void Update()
     {
@@ -129,7 +123,7 @@ public class GameController : MonoBehaviour
                 isCountdownStarted = false;
                 CountdownDisplay.text = "GO!";
                 PanelController.SetCurrentPanel(2);
-                isGameStartded=true;
+                isGameStartded = true;
             }
             CountdownTextupdate();
         }
@@ -189,14 +183,17 @@ public class GameController : MonoBehaviour
         if (P1Score > P2Score)
         {
             //P1 WIN
+            ResultDisplay.text="Winner is Player 1";
         }
         else if (P1Score < P2Score)
         {
             //P2 WIN
+            ResultDisplay.text="Winner is Player 2";
         }
         else
         {
             //draw
+            ResultDisplay.text="Draw!";
         }
 
     }

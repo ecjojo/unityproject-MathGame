@@ -2263,22 +2263,19 @@ MonoBehaviour:
   gameMode: 0
   isCountdownStarted: 0
   CountdownSystem: 3
+  CountdownDisplay: {fileID: 2072772100}
   isGameStartded: 0
   timeRemainingSystem: 90
-  CountdownDisplay: {fileID: 2072772100}
-  gameStartedCountDown: 0
   TimerDisplay: {fileID: 149081278}
-  gameTimeCounter: 0
   QuestionController: {fileID: 543843880}
   ScoreBar: {fileID: 1616274226}
   P1Score: 0
   P2Score: 0
-  P1AnsSpeed: 0
-  P2AnsSpeed: 0
   P1AnsCombo: 0
   P2AnsCombo: 0
   P1ScoreDisplay: {fileID: 202176009}
   P2ScoreDisplay: {fileID: 947229074}
+  ResultDisplay: {fileID: 732109795}
 --- !u!4 &543843878
 Transform:
   m_ObjectHideFlags: 0
@@ -2704,7 +2701,7 @@ GameObject:
   - component: {fileID: 732109796}
   - component: {fileID: 732109795}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ResultText (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2777,10 +2774,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
