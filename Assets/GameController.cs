@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 //Timer 
 // For Start Game
@@ -10,34 +11,34 @@ using TMPro;
 public class GameController : MonoBehaviour
 {
     public PanelController PanelController;
+    public AudioController AudioController;
     public Button testingBtn;
 
     public Slider gameModeSlider;
     public int gameMode = 0;
 
-    [Header("Timer")]
+    [Header("Countdown")]
     public bool isCountdownStarted = false;
     public float CountdownSystem = 3;
-    public bool isGameStartded = false;
-
-    public float timeRemainingSystem = 90;
-
     public TMP_Text CountdownDisplay;
-    public int gameStartedCountDown;
+    int gameStartedCountDown;
 
+    [Header("Timer")]
+    public bool isGameStartded = false;
+    public float timeRemainingSystem = 90;
     public TMP_Text TimerDisplay;
-    public int gameTimeCounter;
+    int gameTimeCounter;
 
     public QuestionController QuestionController;
 
     [Header("Score System")]
 
-    public int P1Score, P2Score;
-    public int P1AnsSpeed, P2AnsSpeed;
+    public Slider ScoreBar;
+    public float P1Score, P2Score;
+    float P1AnsSpeed, P2AnsSpeed;
     public int P1AnsCombo, P2AnsCombo;
 
     public TMP_Text P1ScoreDisplay, P2ScoreDisplay;
-
 
 
     public void P1_AddScore()
@@ -62,6 +63,15 @@ public class GameController : MonoBehaviour
     {
         P1ScoreDisplay.text = "" + P1Score;
         P2ScoreDisplay.text = "" + P2Score;
+
+        if (P1Score + P2Score > 0)
+        {
+            float ratio = P1Score / (P1Score + P2Score);
+            ScoreBar.DOValue(ratio, 5, false);
+            Debug.Log("ratio:" + ratio);
+
+        }
+
     }
 
     void Start()
@@ -101,23 +111,7 @@ public class GameController : MonoBehaviour
 
     }
 
-    void CheckWinner()
-    {
-        //highest score
-        if (P1Score > P2Score)
-        {
-            //P1 WIN
-        }
-        else if (P1Score < P2Score)
-        {
-            //P2 WIN
-        }
-        else
-        {
-            //draw
-        }
 
-    }
 
     //
     void Update()
@@ -133,7 +127,9 @@ public class GameController : MonoBehaviour
             {
                 CountdownSystem = 0;
                 isCountdownStarted = false;
-                CountdownDisplay.text = " ";
+                CountdownDisplay.text = "GO!";
+                PanelController.SetCurrentPanel(2);
+                isGameStartded=true;
             }
             CountdownTextupdate();
         }
@@ -150,6 +146,7 @@ public class GameController : MonoBehaviour
             {
                 timeRemainingSystem = 0;
                 isGameStartded = false;
+                EndGame();
             }
             GameCounterTextupdate();
         }
@@ -160,7 +157,7 @@ public class GameController : MonoBehaviour
 
     void CountdownTextupdate()
     {
-        gameStartedCountDown = (int)timeRemainingSystem;
+        gameStartedCountDown = (int)CountdownSystem;
         CountdownDisplay.text = "" + gameStartedCountDown;
 
     }
@@ -168,7 +165,7 @@ public class GameController : MonoBehaviour
 
     void GameCounterTextupdate()
     {
-        gameTimeCounter = (int)CountdownSystem;
+        gameTimeCounter = (int)timeRemainingSystem;
         TimerDisplay.text = "" + gameTimeCounter;
     }
 
@@ -180,6 +177,27 @@ public class GameController : MonoBehaviour
 
     void EndGame()
     {
+        AudioController.PlayResult();
+        PanelController.SetCurrentPanel(3);
+
+        CheckWinner();
+    }
+
+    void CheckWinner()
+    {
+        //highest score
+        if (P1Score > P2Score)
+        {
+            //P1 WIN
+        }
+        else if (P1Score < P2Score)
+        {
+            //P2 WIN
+        }
+        else
+        {
+            //draw
+        }
 
     }
 

@@ -7,29 +7,35 @@ using UnityEngine.UI;
 //Answer System
 public class ClickableButtonController : MonoBehaviour
 {
-    public GameController gm;
+    public GameController GameController;
+    public PanelController PanelController;
 
     [Header("Button Objects")]
     //MEUN
     public Button startBtn;
     //GAME & RESULT
     public Button backBtn;
+    public Button replayBtn;
 
 
     private void Awake()
     {
         startBtn.onClick.AddListener(GameStartOnclick);
         backBtn.onClick.AddListener(BackToMeunOnclick);
+        replayBtn.onClick.AddListener(BackToMeunOnclick);
     }
 
     private void GameStartOnclick()
     {
-        Debug.Log("Button clicked with no parameters");
+        //PanelController
+        PanelController.SetCurrentPanel(1);
+        GameController.isCountdownStarted=true;
     }
 
     private void BackToMeunOnclick()
     {
-        Debug.Log("Button clicked with no parameters");
+        //PanelController
+        PanelController.SetCurrentPanel(0);
     }
 
 }

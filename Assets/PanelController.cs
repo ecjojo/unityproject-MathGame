@@ -22,45 +22,69 @@ public class PanelController : MonoBehaviour
     public float fadeTime = 1f;
 
 
-    public void PanelFadeIn(string panel)
+    void Start()
     {
-        SetTargetPanel(panel);
-        canvasGroup.alpha = 0f;
-        rectTransform.transform.localPosition = new Vector3(0f, -1000f, 0f);
-        rectTransform.DOAnchorPos(new Vector2(0f, 0f), fadeTime, false).SetEase(Ease.OutElastic);
-        canvasGroup.DOFade(1, fadeTime);
-        StartCoroutine("ItemAnimation");
+
+
+        TargetPanel = MeunPanel;
+        ResetPanel();
+    }
+    void ResetPanel()
+    {
+        SetCurrentPanel(1);
+        PanelFadeOut();
+        SetCurrentPanel(2);
+        PanelFadeOut();
+        SetCurrentPanel(3);
+        PanelFadeOut();
+
+        SetCurrentPanel(0);
     }
 
-    public void PanelFadeOut(string panel)
+    public void SetCurrentPanel(int panel)
     {
+        //Current out
+        PanelFadeOut();
+        //new in
         SetTargetPanel(panel);
-        canvasGroup.alpha = 1f;
-        rectTransform.transform.localPosition = new Vector3(0f, 0f, 0f);
-        rectTransform.DOAnchorPos(new Vector2(0f, -1000f), fadeTime, false).SetEase(Ease.InElastic);
-        canvasGroup.DOFade(0, fadeTime);
+        PanelFadeIn();
     }
 
-    void SetTargetPanel(string targetPanelName)
+    void PanelFadeIn()
+    {
+        TargetPanel.GetComponent<CanvasGroup>().alpha = 0f;
+        TargetPanel.GetComponent<RectTransform>().transform.localPosition = new Vector3(0f, -1000f, 0f);
+        TargetPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0f, 0f), fadeTime, false).SetEase(Ease.OutElastic);
+        TargetPanel.GetComponent<CanvasGroup>().DOFade(1, fadeTime);
+        //StartCoroutine("ItemAnimation");
+    }
+
+    void PanelFadeOut()
+    {
+        TargetPanel.GetComponent<CanvasGroup>().alpha = 1f;
+        TargetPanel.GetComponent<RectTransform>().transform.localPosition = new Vector3(0f, 0f, 0f);
+        TargetPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0f, -1000f), fadeTime, false).SetEase(Ease.InElastic);
+        TargetPanel.GetComponent<CanvasGroup>().DOFade(0, fadeTime);
+    }
+
+    void SetTargetPanel(int targetPanelName)
     {
         switch (targetPanelName)
         {
-            case "MeunPanel":
+            case 0:
                 TargetPanel = MeunPanel;
                 break;
-            case "CountdownPanel":
+            case 1:
                 TargetPanel = CountdownPanel;
                 break;
-            case "GamePanel":
+            case 2:
                 TargetPanel = GamePanel;
                 break;
-            case "ResultPanel":
+            case 3:
                 TargetPanel = ResultPanel;
                 break;
         }
-
-        canvasGroup = TargetPanel.GetComponent<CanvasGroup>();
-        rectTransform = TargetPanel.GetComponent<RectTransform>();
+        Debug.Log("targetPanel: " + TargetPanel);
     }
 
     IEnumerator ItemAnimation()
