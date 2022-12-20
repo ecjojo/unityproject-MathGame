@@ -24,21 +24,15 @@ public class PanelController : MonoBehaviour
 
     void Start()
     {
-
-
         TargetPanel = MeunPanel;
         ResetPanel();
     }
     void ResetPanel()
     {
-        SetCurrentPanel(1);
-        PanelFadeOut();
-        SetCurrentPanel(2);
-        PanelFadeOut();
-        SetCurrentPanel(3);
-        PanelFadeOut();
-
-        SetCurrentPanel(0);
+        MeunPanel.GetComponent<CanvasGroup>().alpha = 1f;
+        CountdownPanel.GetComponent<CanvasGroup>().alpha = 0f;
+        GamePanel.GetComponent<CanvasGroup>().alpha = 0f;
+        ResultPanel.GetComponent<CanvasGroup>().alpha = 0f;
     }
 
     public void SetCurrentPanel(int panel)

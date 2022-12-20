@@ -15,17 +15,17 @@ public class GameController : MonoBehaviour
     public Button testingBtn;
 
     public Slider gameModeSlider;
-    public int gameMode = 0;
+    public int gameMode = 1;
 
     [Header("Countdown")]
     public bool isCountdownStarted = false;
-    public float CountdownSystem = 3;
+    float CountdownSystem = 4;
     public TMP_Text CountdownDisplay;
     int gameStartedCountDown;
 
     [Header("Timer")]
     public bool isGameStartded = false;
-    public float timeRemainingSystem = 90;
+    float timeRemainingSystem = 90;
     public TMP_Text TimerDisplay;
     int gameTimeCounter;
 
@@ -35,10 +35,12 @@ public class GameController : MonoBehaviour
 
     public Slider ScoreBar;
     public float P1Score, P2Score;
-    float P1AnsSpeed, P2AnsSpeed;
+
     public int P1AnsCombo, P2AnsCombo;
 
     public TMP_Text P1ScoreDisplay, P2ScoreDisplay;
+
+    float P1AnsSpeed, P2AnsSpeed;
 
     [Header("Result")]
     public TMP_Text ResultDisplay;
@@ -46,9 +48,10 @@ public class GameController : MonoBehaviour
 
     public void P1_AddScore()
     {
-        float AnsSpeed=gameTimeCounter-P1AnsSpeed;
-        P1AnsSpeed=gameTimeCounter;
-        
+        float AnsSpeed = P1AnsSpeed - timeRemainingSystem; //eg.90-87=
+        Debug.Log(P1AnsCombo + " : " + AnsSpeed);
+        P1AnsSpeed = timeRemainingSystem;
+
         P1AnsCombo++;
         float comboscore = (1 + P1AnsCombo * 0.1f) * 10;
         P1Score += (int)comboscore;
@@ -58,9 +61,9 @@ public class GameController : MonoBehaviour
 
     public void P2_AddScore()
     {
-        float AnsSpeed=gameTimeCounter-P2AnsSpeed;
-        P2AnsSpeed=gameTimeCounter;
-        
+        float AnsSpeed = gameTimeCounter - P2AnsSpeed;
+        //P2AnsSpeed = 
+
         P2AnsCombo++;
         float comboscore = (1 + P2AnsCombo * 0.1f) * 10;
         P2Score += (int)comboscore;
@@ -86,13 +89,19 @@ public class GameController : MonoBehaviour
         GameReset();
         GameStart();
         ScoreUIupdate();
-        P1AnsSpeed=gameTimeCounter;
-        P2AnsSpeed=gameTimeCounter;
+
     }
     void GameReset()
     {
         P1Score = 0;
         P2Score = 0;
+        gameMode = 1;
+
+        P1AnsSpeed = gameTimeCounter;
+        P2AnsSpeed = gameTimeCounter;
+
+        CountdownSystem = 4;
+        timeRemainingSystem = 90;
     }
 
     public void GameStart()
@@ -105,7 +114,6 @@ public class GameController : MonoBehaviour
         //gen Q N A
         QuestionController.Generate_Question(true);
         QuestionController.Generate_Question(false);
-
     }
     //
     void Update()
@@ -116,16 +124,22 @@ public class GameController : MonoBehaviour
             if (CountdownSystem > 0)
             {
                 CountdownSystem -= Time.deltaTime;
+                CountdownTextupdate();
+
+            }
+            else if (CountdownSystem == 0)
+            {
+                CountdownDisplay.text = "GO!";
             }
             else
             {
                 CountdownSystem = 0;
-                isCountdownStarted = false;
-                CountdownDisplay.text = "GO!";
                 PanelController.SetCurrentPanel(2);
                 isGameStartded = true;
+                isCountdownStarted = false;
             }
-            CountdownTextupdate();
+
+
         }
 
 
@@ -183,17 +197,17 @@ public class GameController : MonoBehaviour
         if (P1Score > P2Score)
         {
             //P1 WIN
-            ResultDisplay.text="Winner is Player 1";
+            ResultDisplay.text = "Winner is Player 1";
         }
         else if (P1Score < P2Score)
         {
             //P2 WIN
-            ResultDisplay.text="Winner is Player 2";
+            ResultDisplay.text = "Winner is Player 2";
         }
         else
         {
             //draw
-            ResultDisplay.text="Draw!";
+            ResultDisplay.text = "Draw!";
         }
 
     }

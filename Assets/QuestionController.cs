@@ -28,6 +28,8 @@ public class QuestionController : MonoBehaviour
     int ansPos = 0;
     //public bool isMixMode;
 
+    public bool isCazryMode;
+
     void Awake()
     {
         AnswerText.Add("A");
@@ -44,13 +46,13 @@ public class QuestionController : MonoBehaviour
         switch (GameController.gameMode)
         {
             case 0:
-                QuestionText = Question_Addition();
+                QuestionText = Question_MoreandLess();
                 break;
             case 1:
-                QuestionText = Question_Subtraction();
+                QuestionText = Question_Addition();
                 break;
             case 2:
-                QuestionText = Question_MoreandLess();
+                QuestionText = Question_Subtraction();
                 break;
             case 3:
                 QuestionText = Question_Mix();
@@ -105,6 +107,32 @@ public class QuestionController : MonoBehaviour
         return Random.Range(0, 2);
     }
 
+    string Question_MoreandLess()
+    {
+        AnswerText[0] = " < ";
+        AnswerText[1] = " = ";
+        AnswerText[2] = " > ";
+        //2(> or = or <)3 
+        //output text
+        int questioSlot_partA = RandomNum();
+        int questioSlot_partB = RandomNum();
+
+        if (questioSlot_partA > questioSlot_partB)
+        {
+            ansPos = 0;
+        }
+        else if (questioSlot_partA < questioSlot_partB)
+        {
+            ansPos = 2;
+        }
+        else
+        {
+            ansPos = 1;
+        }
+
+        return questioSlot_partA + " ? " + questioSlot_partB;
+    }
+
     string Question_Addition()
     {
         //2+2 = ?
@@ -114,7 +142,7 @@ public class QuestionController : MonoBehaviour
         int questioSlot_partB = RandomNum();
 
         int ansSlot = questioSlot_partA + questioSlot_partB;
-        Debug.Log(ansSlot + "=" + questioSlot_partA + " + " + questioSlot_partB);
+        //Debug.Log(ansSlot + "=" + questioSlot_partA + " + " + questioSlot_partB);
         ansPos = RandomAnsPos();
         AnswerText[ansPos] = "" + ansSlot;
         //Random ans
@@ -142,6 +170,7 @@ public class QuestionController : MonoBehaviour
         //output text
         int questioSlot_partA = RandomNum() + 1;
         int questioSlot_partB = RandomNum();
+
         while (questioSlot_partA < questioSlot_partB)
         {
             questioSlot_partA = RandomNum() + 1;
@@ -152,15 +181,6 @@ public class QuestionController : MonoBehaviour
         //Random ans
 
         return questioSlot_partA + " - " + questioSlot_partB + " = ?";
-    }
-
-    string Question_MoreandLess()
-    {
-        //2(> or = or <)3 
-        //output text
-        int questioSlot_partA = RandomNum();
-        int questioSlot_partB = RandomNum();
-        return questioSlot_partA + " ? " + questioSlot_partB;
     }
 
     string Question_Mix() //If have time to made
