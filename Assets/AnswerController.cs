@@ -19,13 +19,15 @@ public class AnswerController : MonoBehaviour
     bool P1_canContinue = true;
     bool P2_canContinue = true;
 
+
+
     public void P1_Check_Answer(int enterAns)
     {
 
         //correct
-        if (P1_canContinue)
+        if (P1_canContinue && GameController.isGameStartded)
         {
-            Debug.Log("enterAns = " + enterAns);
+            //Debug.Log("enterAns = " + enterAns);
             if (QuestionController.P1_currentTargetAns == enterAns)
             {
                 //targetplayer++
@@ -58,9 +60,9 @@ public class AnswerController : MonoBehaviour
 
     public void P2_Check_Answer(int enterAns)
     {
-        if (P2_canContinue)
+        if (P2_canContinue && GameController.isGameStartded)
         {
-            Debug.Log("enterAns = " + enterAns);
+            //Debug.Log("enterAns = " + enterAns);
             //correct
             if (QuestionController.P2_currentTargetAns == enterAns)
             {

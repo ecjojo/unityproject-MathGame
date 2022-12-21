@@ -47,8 +47,8 @@ public class PanelController : MonoBehaviour
     void PanelFadeIn()
     {
         TargetPanel.GetComponent<CanvasGroup>().alpha = 0f;
-        TargetPanel.GetComponent<RectTransform>().transform.localPosition = new Vector3(0f, -1000f, 0f);
-        TargetPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0f, 0f), fadeTime, false).SetEase(Ease.OutElastic);
+        //TargetPanel.GetComponent<RectTransform>().transform.localPosition = new Vector3(0f, -1000f, 0f);
+        //TargetPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0f, 0f), fadeTime, false).SetEase(Ease.InSine);
         TargetPanel.GetComponent<CanvasGroup>().DOFade(1, fadeTime);
         //StartCoroutine("ItemAnimation");
     }
@@ -56,8 +56,8 @@ public class PanelController : MonoBehaviour
     void PanelFadeOut()
     {
         TargetPanel.GetComponent<CanvasGroup>().alpha = 1f;
-        TargetPanel.GetComponent<RectTransform>().transform.localPosition = new Vector3(0f, 0f, 0f);
-        TargetPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0f, -1000f), fadeTime, false).SetEase(Ease.InElastic);
+        //TargetPanel.GetComponent<RectTransform>().transform.localPosition = new Vector3(0f, 0f, 0f);
+        //TargetPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0f, -1000f), fadeTime, false).SetEase(Ease.InSine);
         TargetPanel.GetComponent<CanvasGroup>().DOFade(0, fadeTime);
     }
 
@@ -78,7 +78,7 @@ public class PanelController : MonoBehaviour
                 TargetPanel = ResultPanel;
                 break;
         }
-        Debug.Log("targetPanel: " + TargetPanel);
+        //Debug.Log("targetPanel: " + TargetPanel);
     }
 
     IEnumerator ItemAnimation()

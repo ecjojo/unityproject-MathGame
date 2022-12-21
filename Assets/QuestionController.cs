@@ -6,10 +6,13 @@ using UnityEngine.UI;
 
 public class QuestionController : MonoBehaviour
 {
+    public bool isCazryMode;
     [Header("Player1")]
     public TMP_Text P1_questionBar;
     public TMP_Text P1_answerBar_A, P1_answerBar_B, P1_answerBar_C;
-    public int P1_currentTargetAns = 0; //0-2
+    public int P1_currentTargetAns = 0; //0-2 
+
+    int P1_questionCount; 
 
 
     [Header("Player2")]
@@ -17,6 +20,8 @@ public class QuestionController : MonoBehaviour
     public TMP_Text P2_answerBar_A, P2_answerBar_B, P2_answerBar_C;
 
     public int P2_currentTargetAns = 0; //0-2
+
+    int P2_questionCount; 
 
 
     [Header("Question Control")]
@@ -28,31 +33,45 @@ public class QuestionController : MonoBehaviour
     int ansPos = 0;
     //public bool isMixMode;
 
-    public bool isCazryMode;
 
     void Awake()
     {
         AnswerText.Add("A");
         AnswerText.Add("B");
         AnswerText.Add("C");
+        //isCazryMode = false;
     }
 
 
     //Generate Question
     #region Generate Question
 
+    void ResetCounter()
+    {
+        P1_questionCount = 0;
+        P2_questionCount = 0;
+    }
     void QuestionType()
     {
-        switch (GameController.gameMode)
+        int mode = GameController.gameMode;
+        if (isCazryMode)
+        {
+            mode = Random.Range(0, 3);
+        }
+
+        switch (mode)
         {
             case 0:
                 QuestionText = Question_MoreandLess();
+                //Debug.Log("Type 1");
                 break;
             case 1:
                 QuestionText = Question_Addition();
+                //Debug.Log("Type 2");
                 break;
             case 2:
                 QuestionText = Question_Subtraction();
+                //Debug.Log("Type 3");
                 break;
             case 3:
                 QuestionText = Question_Mix();
@@ -63,7 +82,10 @@ public class QuestionController : MonoBehaviour
     }
     public void Generate_Question(bool isP1)
     {
+
         QuestionType();
+
+
         //GET POS (1/2)
         //GET CURRENT Question TYPE
         //DISPLAY TEXT
@@ -77,6 +99,7 @@ public class QuestionController : MonoBehaviour
         //SEND TO POS
         if (isP1)
         {
+            P1_questionCount++;
             P1_currentTargetAns = ansPos;
 
             P1_questionBar.text = QuestionText;
@@ -86,6 +109,7 @@ public class QuestionController : MonoBehaviour
         }
         else
         {
+            P2_questionCount++;
             P2_currentTargetAns = ansPos;
 
             P2_questionBar.text = QuestionText;
@@ -117,11 +141,11 @@ public class QuestionController : MonoBehaviour
         int questioSlot_partA = RandomNum();
         int questioSlot_partB = RandomNum();
 
-        if (questioSlot_partA > questioSlot_partB)
+        if (questioSlot_partA < questioSlot_partB)
         {
             ansPos = 0;
         }
-        else if (questioSlot_partA < questioSlot_partB)
+        else if (questioSlot_partA > questioSlot_partB)
         {
             ansPos = 2;
         }
@@ -148,7 +172,7 @@ public class QuestionController : MonoBehaviour
         //Random ans
         for (int i = 0; i <= 2; i = i + 0)
         {
-            int otherAns = RandomNum() + RandomNum();
+            int otherAns = RandomNum();
 
             if (
             otherAns.ToString() != ansSlot.ToString() &&
@@ -171,13 +195,30 @@ public class QuestionController : MonoBehaviour
         int questioSlot_partA = RandomNum() + 1;
         int questioSlot_partB = RandomNum();
 
-        while (questioSlot_partA < questioSlot_partB)
+        while (questioSlot_partB > questioSlot_partA)
         {
-            questioSlot_partA = RandomNum() + 1;
             questioSlot_partB = RandomNum();
         }
+        int ansSlot = questioSlot_partA - questioSlot_partB;
 
+        for (int i = 0; i <= 2; i = i + 0)
+        {
+
+            int otherAns = RandomNum();
+
+            if (
+            otherAns.ToString() != ansSlot.ToString() &&
+            otherAns.ToString() != AnswerText[0] &&
+            otherAns.ToString() != AnswerText[1] &&
+            otherAns.ToString() != AnswerText[2])
+            {
+                AnswerText[i] = "" + otherAns;
+                i++;
+            }
+        }
         ansPos = RandomAnsPos();
+        AnswerText[ansPos] = "" + ansSlot;
+
         //Random ans
 
         return questioSlot_partA + " - " + questioSlot_partB + " = ?";
