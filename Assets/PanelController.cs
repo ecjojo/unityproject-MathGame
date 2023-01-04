@@ -29,6 +29,11 @@ public class PanelController : MonoBehaviour
     }
     void ResetPanel()
     {
+        MeunPanel.SetActive(true);
+        CountdownPanel.SetActive(false);
+        GamePanel.SetActive(false);
+        ResultPanel.SetActive(false);
+
         MeunPanel.GetComponent<CanvasGroup>().alpha = 1f;
         CountdownPanel.GetComponent<CanvasGroup>().alpha = 0f;
         GamePanel.GetComponent<CanvasGroup>().alpha = 0f;
@@ -46,10 +51,12 @@ public class PanelController : MonoBehaviour
 
     void PanelFadeIn()
     {
+        TargetPanel.SetActive(true);
         TargetPanel.GetComponent<CanvasGroup>().alpha = 0f;
         //TargetPanel.GetComponent<RectTransform>().transform.localPosition = new Vector3(0f, -1000f, 0f);
         //TargetPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0f, 0f), fadeTime, false).SetEase(Ease.InSine);
         TargetPanel.GetComponent<CanvasGroup>().DOFade(1, fadeTime);
+
         //StartCoroutine("ItemAnimation");
     }
 
@@ -59,6 +66,7 @@ public class PanelController : MonoBehaviour
         //TargetPanel.GetComponent<RectTransform>().transform.localPosition = new Vector3(0f, 0f, 0f);
         //TargetPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0f, -1000f), fadeTime, false).SetEase(Ease.InSine);
         TargetPanel.GetComponent<CanvasGroup>().DOFade(0, fadeTime);
+        TargetPanel.SetActive(false);
     }
 
     void SetTargetPanel(int targetPanelName)

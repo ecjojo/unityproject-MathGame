@@ -19,8 +19,6 @@ public class AnswerController : MonoBehaviour
     bool P1_canContinue = true;
     bool P2_canContinue = true;
 
-
-
     public void P1_Check_Answer(int enterAns)
     {
 

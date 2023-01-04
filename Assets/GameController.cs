@@ -10,7 +10,6 @@ using DG.Tweening;
 // For Game Countdown
 public class GameController : MonoBehaviour
 {
-
     [Header("Controller")]
     public PanelController PanelController;
     public AudioController AudioController;
@@ -26,7 +25,7 @@ public class GameController : MonoBehaviour
 
     [Header("Timer")]
     public bool isGameStartded = false;
-    float timeRemainingSystem = 90;
+    public float timeRemainingSystem = 90;
     public TMP_Text TimerDisplay;
     int gameTimeCounter;
 
@@ -36,6 +35,11 @@ public class GameController : MonoBehaviour
     public float P1Score, P2Score;
     public int P1AnsCombo, P2AnsCombo;
     public TMP_Text P1ScoreDisplay, P2ScoreDisplay;
+    public TMP_Text P1CorrectRatioDisplay, P2CorrectRatioDisplay;
+    public TMP_Text P1AnsCounterDisplay, P2AnsCounterDisplay;
+    public TMP_Text P1AddedScoreDisplay, P2AddedScoreDisplay;
+
+    public Animator Add1, Add2;
     float P1AnsSpeed, P2AnsSpeed;
     float P1AnsTime, P2AnsTime;
     int P1_correctCount; int P2_correctCount;
@@ -45,30 +49,35 @@ public class GameController : MonoBehaviour
 
     public Color P1Color; public Color P2Color;
     public Color P1Color2; public Color P2Color2;
-
     public Image PanelColor;
     public Image PanelColor2;
 
-
     void ResetCounter()
     {
+        P1Score = 0;
+        P2Score = 0;
         P1_correctCount = 0;
         P2_correctCount = 0;
+        P1AnsCombo = 0;
+        P2AnsCombo = 0;
+        P1CorrectRatioDisplay.text = "100%";
+        P2CorrectRatioDisplay.text = "100%";
     }
+
     public void P1_AddScore()
     {
         P1_correctCount++;
 
-        float Time = P1AnsTime-timeRemainingSystem; //eg.90-87=3
-        float Speed = 1/Time;    
+        float Time = P1AnsTime - timeRemainingSystem; //eg.90-87=3
+        float Speed = 1 / Time; // eg.1/3=0.33
 
         P1AnsSpeed = Speed;
 
         P1AnsCombo++;
-        float comboscore = (1 + P1AnsCombo * P1AnsSpeed) * 10;
+        float comboscore = (1 + P1AnsCombo * P1AnsSpeed) * 10;  // eg.(1+5*0.33)*10=26, eg.(1+5*2)*10=110
 
-        Debug.Log("P1 Score :" +P1AnsCombo + " ,Speed: "+Time+",AnsSpeed:" + P1AnsSpeed);
         P1Score += (int)comboscore;
+        P1AddScoreAnim((int)comboscore);
 
         P1AnsTime = timeRemainingSystem;
         ScoreUIupdate();
@@ -77,16 +86,18 @@ public class GameController : MonoBehaviour
     public void P2_AddScore()
     {
         P2_correctCount++;
-        float Time = P2AnsTime-timeRemainingSystem; //eg.90-87=3
-        float Speed = 1/ Time;
+        float Time = P2AnsTime - timeRemainingSystem; //eg.90-87=3
+        float Speed = 1 / Time;
 
         P2AnsSpeed = Speed;
 
         P2AnsCombo++;
         float comboscore = (1 + P2AnsCombo * P2AnsSpeed) * 10;
+        //display
 
-        Debug.Log("P1 Score :" +P2AnsCombo + " ,Speed: " + P2AnsSpeed);
+        //Debug.Log("P1 Score :" + P2AnsCombo + " ,Speed: " + P2AnsSpeed);
         P2Score += (int)comboscore;
+        P2AddScoreAnim((int)comboscore);
 
         P2AnsTime = timeRemainingSystem;
         ScoreUIupdate();
@@ -94,38 +105,64 @@ public class GameController : MonoBehaviour
 
     void ScoreUIupdate()
     {
+        if (isGameStartded)
+        {
+            if (QuestionController.P1_questionCount > 2)
+            {
+                float CorrectRatio1 = ((float)P1_correctCount / QuestionController.P1_questionCount) * 100f;
+                P1CorrectRatioDisplay.text = (int)CorrectRatio1 + "%";
+            }
+            if (QuestionController.P2_questionCount > 2)
+            {
+                float CorrectRatio2 = ((float)P2_correctCount / QuestionController.P2_questionCount) * 100f;
+                P2CorrectRatioDisplay.text = (int)CorrectRatio2 + "%";
+            }
+        }
+
         P1ScoreDisplay.text = "" + P1Score;
         P2ScoreDisplay.text = "" + P2Score;
+
+        //Debug.Log("P1 Score :" + P1_correctCount / QuestionController.P1_questionCount + "  " + QuestionController.P1_questionCount);
+
+        P1AnsCounterDisplay.text = "" + P1_correctCount;
+        P2AnsCounterDisplay.text = "" + P2_correctCount;
 
         if (P1Score + P2Score > 0)
         {
             float ratio = P1Score / (P1Score + P2Score);
             ScoreBar.DOValue(ratio, 5, false);
-            Debug.Log("ratio:" + ratio);
+            //Debug.Log("ratio:" + ratio);
         }
+    }
+    void P1AddScoreAnim(int num)
+    {
+        P1AddedScoreDisplay.text = "+" + num;
+        Add1.Play("AddScoreFX");
+    }
+    void P2AddScoreAnim(int num)
+    {
+        P2AddedScoreDisplay.text = "+" + num;
+        Add2.Play("AddScoreFX");
     }
 
     void Start()
     {
         GameReset();
-
-
     }
     public void GameReset()
     {
-        P1Score = 0;
-        P2Score = 0;
+        //GAME MODE
         gameModeSlider.value = 1;
         gameMode = 1;
 
+        //TIME
         P1AnsSpeed = gameTimeCounter;
         P2AnsSpeed = gameTimeCounter;
-        P1AnsTime=90;
-        P2AnsTime=90;
+        P1AnsTime = 90;
+        P2AnsTime = 90;
 
         CountdownSystem = 4;
         timeRemainingSystem = 90;
-
         isGameStartded = false;
 
         ResetCounter();
@@ -138,8 +175,8 @@ public class GameController : MonoBehaviour
         //when finished
         //count 60s for game  
         //gen Q N A
-
     }
+
 
     public void ReGenerate_Question()
     {
@@ -260,6 +297,8 @@ public class GameController : MonoBehaviour
         {
             //draw
             ResultDisplay.text = "Draw!";
+            PanelColor.color = P1Color2;
+            PanelColor2.color = P2Color;
         }
 
     }

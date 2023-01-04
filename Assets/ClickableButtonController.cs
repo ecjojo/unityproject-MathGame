@@ -27,8 +27,8 @@ public class ClickableButtonController : MonoBehaviour
         startBtn.onClick.AddListener(GameStartOnclick);
         backBtn.onClick.AddListener(BackToMeunOnclick);
         replayBtn.onClick.AddListener(BackToMeunOnclick);
-        exitBtn.onClick.AddListener(BackToMeunOnclick);
-        challngeBtn.onClick.AddListener(BackToMeunOnclick);
+        exitBtn.onClick.AddListener(ExitGame);
+        challngeBtn.onClick.AddListener(ChallengeModeStart);
     }
 
     void ExitGame()

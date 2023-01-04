@@ -12,7 +12,7 @@ public class QuestionController : MonoBehaviour
     public TMP_Text P1_answerBar_A, P1_answerBar_B, P1_answerBar_C;
     public int P1_currentTargetAns = 0; //0-2 
 
-    int P1_questionCount; 
+    public int P1_questionCount; 
 
 
     [Header("Player2")]
@@ -21,7 +21,7 @@ public class QuestionController : MonoBehaviour
 
     public int P2_currentTargetAns = 0; //0-2
 
-    int P2_questionCount; 
+    public int P2_questionCount; 
 
 
     [Header("Question Control")]
@@ -32,16 +32,14 @@ public class QuestionController : MonoBehaviour
     List<string> AnswerText = new List<string>();
     int ansPos = 0;
     //public bool isMixMode;
-
-
     void Awake()
     {
         AnswerText.Add("A");
         AnswerText.Add("B");
         AnswerText.Add("C");
         //isCazryMode = false;
+        ResetCounter();
     }
-
 
     //Generate Question
     #region Generate Question
@@ -99,23 +97,25 @@ public class QuestionController : MonoBehaviour
         //SEND TO POS
         if (isP1)
         {
-            P1_questionCount++;
             P1_currentTargetAns = ansPos;
 
             P1_questionBar.text = QuestionText;
             P1_answerBar_A.text = AnswerText[0];
             P1_answerBar_B.text = AnswerText[1];
             P1_answerBar_C.text = AnswerText[2];
+
+            P1_questionCount++;
         }
         else
         {
-            P2_questionCount++;
             P2_currentTargetAns = ansPos;
 
             P2_questionBar.text = QuestionText;
             P2_answerBar_A.text = AnswerText[0];
             P2_answerBar_B.text = AnswerText[1];
             P2_answerBar_C.text = AnswerText[2];
+            
+            P2_questionCount++;
         }
     }
 
